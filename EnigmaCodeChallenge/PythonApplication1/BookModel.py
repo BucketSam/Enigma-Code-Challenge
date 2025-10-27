@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import date
 
-class BookBase(BaseModel):
+class Book(BaseModel):
     title: str
     author: str
     published_date: date | None = None
