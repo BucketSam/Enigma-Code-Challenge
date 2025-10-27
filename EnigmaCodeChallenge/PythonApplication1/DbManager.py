@@ -50,3 +50,37 @@ class DatabaseManager:
         finally:
             conn.close()
         return book
+
+    def update_book(self, book_id: int, book: Book) -> dict | None:
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM books WHERE id = ?", (book_id,))
+        existing = cur.fetchone()
+        if not existing:
+            conn.close()
+            return None
+
+        try:
+            cur.execute("""
+                UPDATE books
+                SET title = ?, author = ?, published_date = ?, isbn = ?
+                WHERE id = ?
+            """, (book.title, book.author, book.published_date, book.isbn, book_id))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            conn.close()
+            raise ValueError("Book with this ISBN already exists")
+        conn.row_factory = sqlite3.Row
+        cur.execute("SELECT * FROM books WHERE id = ?", (book_id,))
+        updated = cur.fetchone()
+        conn.close()
+        return dict(updated) if updated else None
+
+    def delete_book(self, book_id: int) -> bool:
+        conn = self._connect()
+        cur = conn.cursor()
+        cur.execute("DELETE FROM books WHERE id = ?", (book_id,))
+        conn.commit()
+        deleted = cur.rowcount > 0
+        conn.close()
+        return deleted
