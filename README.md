@@ -3,7 +3,7 @@ A simple FastAPI application to manage books with CRUD operations.
 
 ## Requirements
 - **Python:** 3.10+
-- **Database:** SQLite (or any database configured in `DatabaseManager`)
+- **Database:** SQLite
 - **Packages:** fastapi, uvicorn, pytest, httpx
 
 ## How to Run
