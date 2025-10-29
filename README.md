@@ -9,7 +9,7 @@ A simple FastAPI application to manage books with CRUD operations.
 ## How to Run
 Clone the repository and navigate to the project folder:
 ```bash
-git clone <your-repo-url>
+git clone <repo-url>
 cd <project-folder>
 ```
 
